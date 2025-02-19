@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Suyog CHandramouli">
 
-<title>Lab: Logistic Regression</title>
+<title>Ordinal Regression Lab Answers</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -58,46 +57,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="index_files/libs/clipboard/clipboard.min.js"></script>
-<script src="index_files/libs/quarto-html/quarto.js"></script>
-<script src="index_files/libs/quarto-html/popper.min.js"></script>
-<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="index_files/libs/quarto-html/anchor.min.js"></script>
-<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="index_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="ord_lab_q_files/libs/clipboard/clipboard.min.js"></script>
+<script src="ord_lab_q_files/libs/quarto-html/quarto.js"></script>
+<script src="ord_lab_q_files/libs/quarto-html/popper.min.js"></script>
+<script src="ord_lab_q_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="ord_lab_q_files/libs/quarto-html/anchor.min.js"></script>
+<link href="ord_lab_q_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="ord_lab_q_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="ord_lab_q_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="ord_lab_q_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="ord_lab_q_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 </head>
 
@@ -109,20 +79,13 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Lab: Logistic Regression</h1>
-<p class="subtitle lead">Princeton University</p>
+<h1 class="title">Ordinal Regression Lab Answers</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Suyog CHandramouli </p>
-          </div>
-  </div>
     
   
     
@@ -133,989 +96,650 @@ window.Quarto = {
 </header>
 
 
+<section id="lab-3--ordinal-regression" class="level1">
+<h1>Lab 3- Ordinal Regression</h1>
+<section id="instructions" class="level2">
+<h2 class="anchored" data-anchor-id="instructions">Instructions</h2>
 <ul>
-<li><p>Assignment requirements:</p>
-<ul>
-<li><p>If you are using Github (recommended), make sure to commit and push your work to GitHub regularly, at least after each exercise. Write short and informative commit messages, and share the link to your assignment with me. If not, you can also send me the <strong>rmd</strong> &amp; <strong>rendered file</strong> via Canvas.</p></li>
-<li><p>In this assignment, you will not need to code from scratch. Rather, you’ll need to fill in code where needed. This assignment has a logisitic regression implementation for a scenario from EDA down to model comparison (and would be useful for whenever you may encounter such a situation in the future).</p></li>
-<li><p>I want the assignments to begin reflecting a bit more of how you’d be doing things on your own, where you have some prior knowledge and you figure other things out (by referring to documentation, etc.) . In addition to the rmd, I also want you to submit to me <strong>notes</strong> of anything new that you learn while finishing the assignment. And any pain-points, and we’ll discuss more.</p></li>
-</ul></li>
-<li><p>Note:</p>
-<ul>
-<li><p>If you are fitting a model, display the model output in a neatly formatted table. (The <code>gt</code> <code>tidy</code> and <code>kable</code> functions can help!). <code>Modelsummary</code> also looks good(https://vincentarelbundock.github.io/modelsummary/articles/modelsummary.html)</p></li>
-<li><p>Make sure that your plots are clearly labeled – for all axes, titles, etc.<br>
-</p></li>
-</ul></li>
+<li><p>If you are fitting a model, display the model output in a neatly formatted table. (The <code>tidy</code> and <code>kable</code> functions can help!)</p></li>
+<li><p>If you are creating a plot, use clear labels for all axes, titles, etc.</p></li>
+<li><p>If you are using Github, don’t forget to commit and push your work to to it regularly, at least after each exercise. Write short and informative commit messages. Else, if you are submitting on Canvas, make sure that the version you submit is the latest, and that it runs/knits without any errors.</p></li>
+<li><p>When you’re done, we should be able to knit the final version of the QMD in your GitHub as a HTML.</p></li>
 </ul>
-<section id="data-general-social-survey" class="level2">
-<h2 class="anchored" data-anchor-id="data-general-social-survey">Data: General Social Survey</h2>
-<p>The General Social Survey (GSS) has been used to measure trends in attitudes and behaviors in American society since 1972. In addition to collecting demographic information, the survey includes questions used to gauge attitudes about government spending priorities, confidence in institutions, lifestyle, and many other topics. A full description of the survey may be found here.</p>
-<p>The data for this lab are from the 2016 General Social Survey. The original data set contains 2867 observations and 935 variables. We will use and abbreviated data set that includes the following variables:</p>
-<p>natmass: Respondent’s answer to the following prompt:</p>
-<p>“We are faced with many problems in this country, none of which can be solved easily or inexpensively. I’m going to name some of these problems, and for each one I’d like you to tell me whether you think we’re spending too much money on it, too little money, or about the right amount…are we spending too much, too little, or about the right amount on mass transportation?”</p>
-<p>age: Age in years.</p>
-<p>sex: Sex recorded as male or female</p>
-<p>sei10: Socioeconomic index from 0 to 100</p>
-<p>region: Region where interview took place</p>
-<p>polviews: Respondent’s answer to the following prompt:</p>
-<p>“We hear a lot of talk these days about liberals and conservatives. I’m going to show you a seven-point scale on which the political views that people might hold are arranged from extremely liberal - point 1 - to extremely conservative - point 7. Where would you place yourself on this scale?”</p>
-<p>The data are in gss2016.csv in the data folder.</p>
 </section>
-<section id="eda" class="level2">
-<h2 class="anchored" data-anchor-id="eda">EDA</h2>
-<blockquote class="blockquote">
-<p>Let’s begin by making a binary variable for respondents’ views on spending on mass transportation. Create a new variable that is equal to “1” if a respondent said spending on mass transportation is about right and “0” otherwise. Then plot the proportion of the response variable, using informative labels for each category.</p>
-</blockquote>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(modelsummary)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(easystats)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(emmeans)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(marginaleffects)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(performance)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arm)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(modelsummary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load data</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"C://Users//tommy//Desktop//stats//gss2016.csv"</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<p>Fill in the “____” below to encode the binary variable</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">mass_trans_spend_right =</span> natmass<span class="sc">==</span> <span class="st">"About right"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Get proportions</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>mass_spend_summary <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(mass_trans_spend_right) <span class="sc">%&gt;%</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">proportion =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n))</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Look at the dataframe structure. And make sure it's in a format that you can use for plotting.</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#Change structure if neederd</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>mass_spend_long <span class="ot">&lt;-</span> mass_spend_summary</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Factorise for plot</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>mass_spend_long<span class="sc">$</span>mass_trans_spend_right <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(mass_spend_long<span class="sc">$</span>mass_trans_spend_right)</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#Make plot</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#Hint: geom_bar lets you make stacked bar charts</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mass_spend_long, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> proportion, <span class="at">fill =</span> <span class="fu">factor</span>(mass_trans_spend_right))) <span class="sc">+</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">width =</span> <span class="fl">0.5</span>) <span class="sc">+</span>  </span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Proportion of Mass Transit Spending Support"</span>,</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="cn">NULL</span>,</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Proportion"</span>,</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Support_right"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<blockquote class="blockquote">
-<p>Recode <code>polviews</code> so it is a factor with levels that are in an order that is consistent with question on the survey. Note how the categories are spelled in the data.</p>
-</blockquote>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">polviews =</span> <span class="fu">factor</span>(polviews,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Extremely liberal"</span>,<span class="st">"Liberal"</span>,<span class="st">"Slightly liberal"</span>, <span class="st">"Moderate"</span>,<span class="st">"Slghtly conservative"</span>,<span class="st">"Conservative"</span>,<span class="st">"Extrmly conservative"</span>),</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">ordered =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<blockquote class="blockquote">
-<p>Make a plot of the distribution of <code>polviews</code></p>
-</blockquote>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Get proportions, format, and produce a plot like you did previously for mass_trans_spend_right</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Get proportions</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>polviews_proportions <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(polviews) <span class="sc">%&gt;%</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">proportion =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n))</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(polviews_proportions, <span class="fu">aes</span>(<span class="at">x =</span> <span class="st">""</span>, <span class="at">y =</span> proportion, <span class="at">fill =</span> <span class="fu">factor</span>(polviews))) <span class="sc">+</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">width =</span> <span class="fl">0.5</span>) <span class="sc">+</span>  </span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Proportion of Mass Transit Spending Support"</span>,</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="cn">NULL</span>,  </span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Proportion"</span>,</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Support_right"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<blockquote class="blockquote">
-<p>Which political view occurs most frequently in this data set?</p>
-<p>Moderate</p>
-</blockquote>
-<blockquote class="blockquote">
-<p>Make a plot displaying the relationship between satisfaction with mass transportation spending and political views. Use the plot to describe the relationship the two variables.</p>
-</blockquote>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>grouped_polviews <span class="ot">=</span> data<span class="sc">%&gt;%</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(polviews)<span class="sc">%&gt;%</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(mass_trans_spend_right)<span class="sc">%&gt;%</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">proportion =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n))</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(grouped_polviews, <span class="fu">aes</span>(<span class="at">x =</span> polviews, <span class="at">y =</span> proportion, <span class="at">fill =</span> <span class="fu">factor</span>(mass_trans_spend_right))) <span class="sc">+</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">width =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Proportion of Mass Transit Spending Support"</span>,</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="cn">NULL</span>, </span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Proportion"</span>,</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Support_right"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>The more conservative one’s political views are the more they think the amount of spending on mass transportation is correct.</p>
+</section>
+<section id="lab" class="level1">
+<h1>Lab</h1>
+<p>The data for this week’s lab is taken from the Great British Bake-off (GBBO, https://bakeoff.netlify.app/). In this lab you will be looking at <code>Gender</code> and <code>Age</code> as a predictor of technical rank. For this exercise, we will only be looking at those who were in top 3 of technical.</p>
+<p>In the GBBO, the bakers are usually provided with a list of ingredients and basic instructions, but they may not have access to specific measurements or details on how to prepare the ingredients. The judges evaluate the bakers’ finished products based on factors such as appearance, texture, and flavor, but also compare the bakers’ results to a standard version of the recipe that has been prepared in advance by the judges or a baking expert.</p>
+<p>The dataset contains 3 variables:</p>
 <ul>
-<li>We’d like to use age as a quantitative variable in your model; however, it is currently a character data type because some observations are coded as “89 or older”.</li>
+<li><p><code>Gender</code>: M = MALE, F = FEMALE</p></li>
+<li><p><code>Age</code>: Age of baker</p></li>
+<li><p><code>Technical Rank</code>: Rank in technical (1,2,3)</p></li>
 </ul>
-<blockquote class="blockquote">
-<p>Recode age so that is a numeric variable. Note: Before making the variable numeric, you will need to replace the values “89 or older” with a single value.</p>
-</blockquote>
+<section id="load-packages" class="level2">
+<h2 class="anchored" data-anchor-id="load-packages">Load packages:</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age =</span> <span class="fu">if_else</span>(age <span class="sc">==</span> <span class="st">"89 or older"</span>, <span class="st">"89"</span>,age), </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">age =</span> <span class="fu">as.numeric</span>(age))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(performance)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ordinal) <span class="co">#clm</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car) <span class="co"># anova</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggeffects) <span class="co">#  viz</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gofcat) <span class="co"># brant</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(emmeans) <span class="co"># contrasts</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<blockquote class="blockquote">
-<p>Plot the frequency distribution of age.</p>
-</blockquote>
+</section>
+<section id="load-data" class="level2">
+<h2 class="anchored" data-anchor-id="load-data">Load data</h2>
+<ul>
+<li>Make sure only the top 3 ranks are being used. <em>For some reason, there are missing ranks (my guess is they did not announce rank on TV)</em></li>
+</ul>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> age)) <span class="sc">+</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">5</span>, <span class="at">fill =</span> <span class="st">"blue"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Age Distribution"</span>,</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Age"</span>,</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Frequency"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>gbbo <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://raw.githubusercontent.com/suyoghc/PSY-504_Spring-2025/refs/heads/main/Ordinal%20Regression/data/GBBO.csv"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(gbbo)[<span class="dv">3</span>]<span class="ot">=</span> <span class="st">'Tech_Rank'</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Enter code to filter. Think about the data type that would be relevant for Rank</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>gbbo <span class="ot">=</span> gbbo<span class="sc">%&gt;%</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Tech_Rank))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="explore" class="level2">
+<h2 class="anchored" data-anchor-id="explore">Explore</h2>
+<ul>
+<li>Plot two figures showing the percentage of bakers in each rank— create one for <code>Gender</code> and <code>Age</code></li>
+</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load necessary libraries</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate percentages for Gender</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>gender_percent <span class="ot">&lt;-</span> gbbo <span class="sc">%&gt;%</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Gender, Tech_Rank) <span class="sc">%&gt;%</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Count =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">'drop'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Gender) <span class="sc">%&gt;%</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Percentage =</span> Count <span class="sc">/</span> <span class="fu">sum</span>(Count) <span class="sc">*</span> <span class="dv">100</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot for Gender</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gender_percent, <span class="fu">aes</span>(<span class="at">x =</span> Tech_Rank, <span class="at">y =</span> Percentage, <span class="at">fill =</span> Gender)) <span class="sc">+</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">position =</span> <span class="st">"stack"</span>) <span class="sc">+</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Percentage of Bakers by Rank and Gender"</span>,</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Rank"</span>,</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Percentage"</span>,</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Gender"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="ord_lab_q_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate percentages for Age</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>Age_percent <span class="ot">&lt;-</span> gbbo <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Age, Tech_Rank) <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Count =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">'drop'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Age) <span class="sc">%&gt;%</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Percentage =</span> Count <span class="sc">/</span> <span class="fu">sum</span>(Count) <span class="sc">*</span> <span class="dv">100</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot for Gender</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Age_percent, <span class="fu">aes</span>(<span class="at">x =</span> Tech_Rank, <span class="at">y =</span> Percentage, <span class="at">fill =</span> Age)) <span class="sc">+</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">position =</span> <span class="st">"stack"</span>) <span class="sc">+</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Percentage of Age in every rank"</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Rank"</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Percentage"</span>,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Age"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ord_lab_q_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="logistic-regression" class="level2">
-<h2 class="anchored" data-anchor-id="logistic-regression">Logistic regression</h2>
-<blockquote class="blockquote">
-<p>Let’s start by fitting a logistic regression model with just the intercept</p>
-</blockquote>
+<section id="ordinal-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="ordinal-analysis">Ordinal Analysis</h2>
+<ul>
+<li><p>If you haven’t already, convert the outcome variable to an ordered factor. What does the order here represent?</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>intercept_only_model <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  mass_trans_spend_right<span class="sc">~</span> <span class="dv">1</span>,<span class="at">data=</span>data,<span class="at">family=</span>binomial</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  ) </span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>intercept_only_model <span class="sc">%&gt;%</span> </span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>gbbo<span class="sc">$</span>Tech_Rank <span class="ot">&lt;-</span> <span class="fu">factor</span>(gbbo<span class="sc">$</span>Tech_Rank, </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">ordered =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: left;">term</th>
-<th style="text-align: right;">estimate</th>
-<th style="text-align: right;">std.error</th>
-<th style="text-align: right;">statistic</th>
-<th style="text-align: right;">p.value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">0.1190594</td>
-<td style="text-align: right;">0.0393685</td>
-<td style="text-align: right;">3.024229</td>
-<td style="text-align: right;">0.0024927</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<blockquote class="blockquote">
-<p>Interpret the intercept in the context of the data. You can do this by converting the <span class="math inline">\(\beta_0\)</span> parameter out of the log-odds metric to the probability metric. Make sure to include the 95% confidence intervals. Then interpret the results in a sentence or two–what is the basic thing this probability tells us about?</p>
-</blockquote>
+</div></li>
+<li><p>Convert input variables to categorical factors as appropriate.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>b0 <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(intercept_only_model[<span class="dv">1</span>]) <span class="co"># get coef</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>b0_transformed <span class="ot">&lt;-</span> <span class="fu">exp</span>(b0) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fu">exp</span>(b0)) <span class="co"># logistic transform</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>ci_lower <span class="ot">=</span> b0 <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fl">0.0393685</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>ci_upper <span class="ot">=</span> b0 <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fl">0.0393685</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#transforming confidence intervals of coefficients into probabilities</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>p_lower <span class="ot">=</span> <span class="fu">exp</span>(ci_lower)<span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span><span class="fu">exp</span>(ci_lower))</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>p_upper <span class="ot">=</span> <span class="fu">exp</span>(ci_upper)<span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span><span class="fu">exp</span>(ci_upper))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#gbbo$Age &lt;- as.factor(gbbo$Age)</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>gbbo_ori <span class="ot">=</span> gbbo</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>gbbo<span class="sc">$</span>Gender <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(gbbo<span class="sc">$</span>Gender)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-</div>
-<p>Interpretation: We have 95% confidence that the probability of mass_trans_spend_right being 1 instead of zero is .51 to .55</p>
-<blockquote class="blockquote">
-<p>Now let’s fit a model using the demographic factors - <code>age</code>,<code>sex</code>, <code>sei10</code> - to predict the odds a person is satisfied with spending on mass transportation. Make any necessary adjustments to the variables so the intercept will have a meaningful interpretation. <em>Neatly display the model coefficients (do not display the summary output)</em></p>
-</blockquote>
+</div></li>
+<li><p>Run a ordinal logistic regression model against all relevant input variables. Interpret the effects for <code>Gender</code>, <code>Age</code> and <code>Gender*Age</code> (even if they are non-significant).</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#make sure that sex is a factor (i.e. to make sure R knows it's binary/categorical, and not continuous)</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>sex <span class="ot">=</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>sex<span class="sc">==</span><span class="st">"Female"</span>)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#fit with glm()</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  mass_trans_spend_right<span class="sc">~</span> <span class="dv">1</span><span class="sc">+</span>sex<span class="sc">+</span>age<span class="sc">+</span>sei10,<span class="at">data=</span>data,<span class="at">family=</span>binomial</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  ) </span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">#produce tidy output of model coefficients</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>ordinal_log <span class="ot">&lt;-</span> <span class="fu">clm</span>(Tech_Rank <span class="sc">~</span> Gender <span class="sc">+</span> Age, <span class="at">data =</span> gbbo)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ordinal_log)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 4 × 5
-  term        estimate std.error statistic   p.value
-  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-1 (Intercept)  0.570     0.141        4.04 0.0000527
-2 sex          0.256     0.0798       3.20 0.00135  
-3 age         -0.00617   0.00228     -2.70 0.00690  
-4 sei10       -0.00623   0.00166     -3.75 0.000177 </code></pre>
-</div>
-</div>
-<blockquote class="blockquote">
-<p>Consider the relationship between sex and one’s opinion about spending on mass transportation. Interpret the coefficient of sex in terms of the logs odds and OR of being satisfied with spending on mass transportation. What are the predicted probabilities for males and females on support for spending on mass transportation? Please include the 95% CIs around each estimate.</p>
-</blockquote>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="sc">%&gt;%</span> </span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: left;">term</th>
-<th style="text-align: right;">estimate</th>
-<th style="text-align: right;">std.error</th>
-<th style="text-align: right;">statistic</th>
-<th style="text-align: right;">p.value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">0.5697071</td>
-<td style="text-align: right;">0.1409061</td>
-<td style="text-align: right;">4.043169</td>
-<td style="text-align: right;">0.0000527</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">sex</td>
-<td style="text-align: right;">0.2557439</td>
-<td style="text-align: right;">0.0798020</td>
-<td style="text-align: right;">3.204732</td>
-<td style="text-align: right;">0.0013519</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">age</td>
-<td style="text-align: right;">-0.0061659</td>
-<td style="text-align: right;">0.0022824</td>
-<td style="text-align: right;">-2.701502</td>
-<td style="text-align: right;">0.0069027</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">sei10</td>
-<td style="text-align: right;">-0.0062271</td>
-<td style="text-align: right;">0.0016609</td>
-<td style="text-align: right;">-3.749229</td>
-<td style="text-align: right;">0.0001774</td>
-</tr>
-</tbody>
-</table>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="sc">%&gt;%</span> </span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>(<span class="at">exponentiate =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: left;">term</th>
-<th style="text-align: right;">estimate</th>
-<th style="text-align: right;">std.error</th>
-<th style="text-align: right;">statistic</th>
-<th style="text-align: right;">p.value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">1.7677492</td>
-<td style="text-align: right;">0.1409061</td>
-<td style="text-align: right;">4.043169</td>
-<td style="text-align: right;">0.0000527</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">sex</td>
-<td style="text-align: right;">1.2914219</td>
-<td style="text-align: right;">0.0798020</td>
-<td style="text-align: right;">3.204732</td>
-<td style="text-align: right;">0.0013519</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">age</td>
-<td style="text-align: right;">0.9938530</td>
-<td style="text-align: right;">0.0022824</td>
-<td style="text-align: right;">-2.701502</td>
-<td style="text-align: right;">0.0069027</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">sei10</td>
-<td style="text-align: right;">0.9937922</td>
-<td style="text-align: right;">0.0016609</td>
-<td style="text-align: right;">-3.749229</td>
-<td style="text-align: right;">0.0001774</td>
-</tr>
-</tbody>
-</table>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>bsex <span class="ot">&lt;-</span> <span class="fu">coef</span>(m1)[<span class="st">"sex"</span>]</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>ci_lower_lo <span class="ot">=</span> bsex <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fl">0.0798020</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>ci_upper_lo <span class="ot">=</span> bsex <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fl">0.0798020</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>ci_lower_or <span class="ot">=</span> <span class="fl">1.29</span> <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fl">0.0798020</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>ci_upper_or <span class="ot">=</span> <span class="fl">1.29</span> <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fl">0.0798020</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>emm_sex <span class="ot">&lt;-</span> <span class="fu">emmeans</span>(m1, <span class="st">"sex"</span>, <span class="at">type =</span> <span class="st">"response"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<p>If you did this right, you’ll find that being female (as compared to male) is associated with an increase in the log-odds of being satisfied with spending on mass transportation by 0.2557439 units (95% CI [0.09, 0.41]), holding all other variables constant. This equates to the odds of thinking the spending amount is right in females being 1.29 times the odds of thinking this in men (95% CI [1.13, 1.44]).</p>
-<p>The predicted probability for females to be satisfied with spending on mass transportation is 55.9% (95% CI [53.3%, 58.5%]) and that of males is 49.5% (95% CI [46.7%, 52.4%]).<br>
-<br>
-Verify this.</p>
-<blockquote class="blockquote">
-<p>Next, consider the relationship between age and one’s opinion about spending on mass transportation. Interpret the coefficient of age in terms of the logs odds and OR of being satisfied with spending on mass transportation. Please include the 95% CIs around each estimate.</p>
-</blockquote>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>bage <span class="ot">&lt;-</span> <span class="fu">coef</span>(m1)[<span class="st">"age"</span>]</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>ci_lower_lo <span class="ot">=</span> bage <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fl">0.0022824</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>ci_upper_lo <span class="ot">=</span> bage <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fl">0.0022824</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>ci_lower_or <span class="ot">=</span> <span class="fl">0.9938530</span> <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fl">0.0022824</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>ci_upper_or <span class="ot">=</span> <span class="fl">0.9938530</span> <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fl">0.0022824</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<p>A one unit increase in age is associated with a decrease in the log-odds of being satisfied with spending on mass transportation by -.006, holding all other variables constant. The odds ratio is 1:.99 which confirms the negative relationship implied by the log-odds coefficient. Specifically, for each additional unit of age, the odds of being satisfied with mass transportation spending decrease by a factor of about .99, or approximately -.006 per unit increase in age, holding other factors constant.</p>
-<blockquote class="blockquote">
-<p>Consider the relationship between SES and one’s opinion about spending on mass transportation. Interpret the coefficient of SES in terms of the logs odds and OR of being satisfied with spending on mass transportation. Please include the 95% CIs around each estimate. ß</p>
-</blockquote>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>bses <span class="ot">&lt;-</span> <span class="fu">coef</span>(m1)[<span class="st">"sei10"</span>]</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>ci_lower_lo <span class="ot">=</span> bses <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fl">0.0016609</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>ci_upper_lo <span class="ot">=</span> bses <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fl">0.0016609</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>ci_lower_or <span class="ot">=</span> <span class="fl">0.9938530</span> <span class="sc">-</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fl">0.0016609</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>ci_upper_or <span class="ot">=</span> <span class="fl">0.9938530</span> <span class="sc">+</span> <span class="fl">1.96</span> <span class="sc">*</span> <span class="fl">0.0016609</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<p>A one unit increase in SES index is associated with a decrease in the log-odds of being satisfied with spending on mass transportation by 0.0062 units (95% CI [-0.0094, -0.00297]), holding all other variables constant. The odds ratio is less than 1 (0.9937922), which confirms the negative relationship implied by the log-odds coefficient. Specifically, for each additional unit of SES index, the odds of being satisfied with mass transportation spending decrease by a factor of about 0.993, or approximately 0.7% per unit increase in SES index, holding other factors constant (95% CI [0.9905976, 0.9971084]). ## Marginal effects</p>
-<ul>
-<li>Let’s examine the results on the probability scale.</li>
-</ul>
-<blockquote class="blockquote">
-<p>Calculate the marginal effects of sex, age, and SES on mass transportation spending. You can use the <code>margins</code> package function <code>margins</code> discussed in your textbook or you can use the <code>marginaleffects</code> package <code>avg_slope</code> <code>avg_comparisons</code> discussed in lecture. Interpret each estimate.</p>
-</blockquote>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">avg_comparisons</span>(m1, <span class="at">comparison =</span> <span class="st">"difference"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 6%">
-<col style="width: 10%">
-<col style="width: 12%">
-<col style="width: 11%">
-<col style="width: 11%">
-<col style="width: 11%">
-<col style="width: 11%">
-<col style="width: 12%">
-<col style="width: 12%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">term</th>
-<th style="text-align: left;">contrast</th>
-<th style="text-align: right;">estimate</th>
-<th style="text-align: right;">std.error</th>
-<th style="text-align: right;">statistic</th>
-<th style="text-align: right;">p.value</th>
-<th style="text-align: right;">s.value</th>
-<th style="text-align: right;">conf.low</th>
-<th style="text-align: right;">conf.high</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">age</td>
-<td style="text-align: left;">+1</td>
-<td style="text-align: right;">-0.0015153</td>
-<td style="text-align: right;">0.0005579</td>
-<td style="text-align: right;">-2.716128</td>
-<td style="text-align: right;">0.0066050</td>
-<td style="text-align: right;">7.242216</td>
-<td style="text-align: right;">-0.0026088</td>
-<td style="text-align: right;">-0.0004219</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">sei10</td>
-<td style="text-align: left;">+1</td>
-<td style="text-align: right;">-0.0015304</td>
-<td style="text-align: right;">0.0004039</td>
-<td style="text-align: right;">-3.789362</td>
-<td style="text-align: right;">0.0001510</td>
-<td style="text-align: right;">12.692830</td>
-<td style="text-align: right;">-0.0023219</td>
-<td style="text-align: right;">-0.0007388</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">sex</td>
-<td style="text-align: left;">1 - 0</td>
-<td style="text-align: right;">0.0630688</td>
-<td style="text-align: right;">0.0196461</td>
-<td style="text-align: right;">3.210251</td>
-<td style="text-align: right;">0.0013262</td>
-<td style="text-align: right;">9.558495</td>
-<td style="text-align: right;">0.0245632</td>
-<td style="text-align: right;">0.1015743</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<ul>
-<li><p>The marginal effect of age is -0.0015153 (95% CI [-0.0026088, -0.0004219]). So, for each additional unit increase of age, the probability of being satisfied with mass transportation spending decreases by approximately .15 percentage points, holding other factors constant (p = .007).</p></li>
-<li><p>The marginal effect of SES is 0.0015304 (95% CI [-0.0023219 -0.0007388]). For each one-unit increase in the socioeconomic index, the probability of being satisfied with mass transportation spending decreases by approximately .1 percentage points, holding other variables constant.</p></li>
-<li><p>The marginal effect for being female compared to male is 0.0630688 (95% CI [0.0245632,0.1015743]). This indicates that females are, on average, about 6.3 percentage points more likely than males to be satisfied with mass transportation spending, holding other factors constant.</p></li>
-</ul>
-</section>
-<section id="model-comparison" class="level2">
-<h2 class="anchored" data-anchor-id="model-comparison">Model comparison</h2>
-<ul>
-<li>Now let’s see whether a person’s political views has a significant impact on their odds of being satisfied with spending on mass transportation, after accounting for the demographic factors.</li>
-</ul>
-<blockquote class="blockquote">
-<p>Conduct a drop-in-deviance/likelihood ratio test to determine if polviews is a significant predictor of attitude towards spending on mass transportation. Name these two models <code>fit2</code> and <code>fit3</code>, respectively. Compare the two models.</p>
-</blockquote>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(mass_trans_spend_right <span class="sc">~</span> sex <span class="sc">+</span> age<span class="sc">+</span>polviews, <span class="at">data =</span> data, <span class="at">family =</span> binomial)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>fit3 <span class="ot">&lt;-</span> <span class="fu">glm</span>(mass_trans_spend_right <span class="sc">~</span> sex <span class="sc">+</span> age <span class="sc">+</span> sei10<span class="sc">+</span>polviews, <span class="at">data =</span> data, <span class="at">family =</span> binomial)</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="fu">test_likelihoodratio</span>(fit3, fit2) <span class="sc">%&gt;%</span> <span class="fu">kable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<table class="caption-top table table-sm table-striped small">
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: left;">Name</th>
-<th style="text-align: left;">Model</th>
-<th style="text-align: right;">df</th>
-<th style="text-align: right;">df_diff</th>
-<th style="text-align: right;">Chi2</th>
-<th style="text-align: right;">p</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">fit3</td>
-<td style="text-align: left;">fit3</td>
-<td style="text-align: left;">glm</td>
-<td style="text-align: right;">10</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">NA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">fit2</td>
-<td style="text-align: left;">fit2</td>
-<td style="text-align: left;">glm</td>
-<td style="text-align: right;">9</td>
-<td style="text-align: right;">-1</td>
-<td style="text-align: right;">8.051857</td>
-<td style="text-align: right;">0.0045457</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<blockquote class="blockquote">
-<p>Is the model with polviews better than the model without?</p>
-</blockquote>
-<ul>
-<li>Yes.</li>
-</ul>
-</section>
-<section id="visualization" class="level2">
-<h2 class="anchored" data-anchor-id="visualization">Visualization</h2>
-<ul>
-<li><p>Let’s plot the results</p></li>
-<li><p>We next use the model to produce visualizations:</p>
-<ul>
-<li><p>Given the code below, interpet what is being plotted:</p>
-<ul>
-<li><p>pol_plot : For every unit (in this case category) increase in polviews, the logodds increase of satisfaction == TRUE</p></li>
-<li><p>sex_plot : Going from Male to Female, the logodds increase of satisfaction == TRUE</p></li>
-<li><p>ses_plot: For every unit increase in SES, the logodds increase of satisfaction == TRUE</p></li>
-</ul></li>
-</ul>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Tip
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><p>adjust the various settings in your plot to make it look professional.</p></li>
-<li><p>You can use <code>ggeffects</code> to get the predicted probabilities for these models.</p></li>
-</ul>
+<pre><code>formula: Tech_Rank ~ Gender + Age
+data:    gbbo
+
+ link  threshold nobs logLik   AIC     niter max.grad cond.H 
+ logit flexible  771  -1813.42 3654.84 6(0)  1.87e-10 2.6e+05
+
+Coefficients:
+        Estimate Std. Error z value Pr(&gt;|z|)   
+GenderM 0.266375   0.127313   2.092   0.0364 * 
+Age     0.016228   0.005142   3.156   0.0016 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Threshold coefficients:
+      Estimate Std. Error z value
+1|2    -1.1878     0.2187  -5.432
+2|3    -0.3170     0.2093  -1.515
+3|4     0.2875     0.2082   1.381
+4|5     0.7755     0.2096   3.700
+5|6     1.2114     0.2120   5.714
+6|7     1.6298     0.2158   7.554
+7|8     2.0673     0.2214   9.338
+8|9     2.5213     0.2292  10.999
+9|10    3.0593     0.2426  12.611
+10|11   3.7452     0.2695  13.896
+11|12   4.7216     0.3415  13.828
+12|13   6.6829     0.7383   9.052</code></pre>
 </div>
 </div></li>
+<li><p>Test if the interaction is warranted</p></li>
 </ul>
+<p>#Hint: You need to create two models with clm(); one with interaction and one without. #Then you compare them using the anova test using anova()</p>
+<pre><code>::: {.cell}
+
+```{.r .cell-code}
+   ordinal_log_int &lt;- clm(Tech_Rank ~ Gender + Age + Gender*Age, data = gbbo_ori)
+   summary(ordinal_log)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+formula: Tech_Rank ~ Gender + Age
+data:    gbbo
+
+ link  threshold nobs logLik   AIC     niter max.grad cond.H 
+ logit flexible  771  -1813.42 3654.84 6(0)  1.87e-10 2.6e+05
+
+Coefficients:
+        Estimate Std. Error z value Pr(&gt;|z|)   
+GenderM 0.266375   0.127313   2.092   0.0364 * 
+Age     0.016228   0.005142   3.156   0.0016 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Threshold coefficients:
+      Estimate Std. Error z value
+1|2    -1.1878     0.2187  -5.432
+2|3    -0.3170     0.2093  -1.515
+3|4     0.2875     0.2082   1.381
+4|5     0.7755     0.2096   3.700
+5|6     1.2114     0.2120   5.714
+6|7     1.6298     0.2158   7.554
+7|8     2.0673     0.2214   9.338
+8|9     2.5213     0.2292  10.999
+9|10    3.0593     0.2426  12.611
+10|11   3.7452     0.2695  13.896
+11|12   4.7216     0.3415  13.828
+12|13   6.6829     0.7383   9.052
+```
+
+
+:::
+
+```{.r .cell-code}
+   summary(ordinal_log_int)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+formula: Tech_Rank ~ Gender + Age + Gender * Age
+data:    gbbo_ori
+
+ link  threshold nobs logLik   AIC     niter max.grad cond.H 
+ logit flexible  771  -1813.41 3656.82 6(0)  1.87e-10 4.2e+05
+
+Coefficients:
+            Estimate Std. Error z value Pr(&gt;|z|)  
+GenderM     0.218602   0.396021   0.552   0.5809  
+Age         0.015732   0.006450   2.439   0.0147 *
+GenderM:Age 0.001354   0.010629   0.127   0.8986  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Threshold coefficients:
+      Estimate Std. Error z value
+1|2    -1.2059     0.2606  -4.627
+2|3    -0.3350     0.2527  -1.326
+3|4     0.2693     0.2523   1.068
+4|5     0.7572     0.2539   2.982
+5|6     1.1931     0.2561   4.658
+6|7     1.6114     0.2594   6.212
+7|8     2.0490     0.2640   7.762
+8|9     2.5031     0.2702   9.264
+9|10    3.0412     0.2809  10.826
+10|11   3.7274     0.3037  12.272
+11|12   4.7039     0.3689  12.752
+12|13   6.6651     0.7514   8.870
+```
+
+
+:::
+
+```{.r .cell-code}
+   nested_comp = anova(ordinal_log,ordinal_log_int)
+   print(nested_comp)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+Likelihood ratio tests of cumulative link models:
+ 
+                formula:                                link: threshold:
+ordinal_log     Tech_Rank ~ Gender + Age                logit flexible  
+ordinal_log_int Tech_Rank ~ Gender + Age + Gender * Age logit flexible  
+
+                no.par    AIC  logLik LR.stat df Pr(&gt;Chisq)
+ordinal_log         14 3654.8 -1813.4                      
+ordinal_log_int     15 3656.8 -1813.4  0.0162  1     0.8986
+```
+
+
+:::
+:::</code></pre>
+<ul>
+<li><p>Use <code>ggemmeans</code> to create a figure showing the interaction between <code>Gender</code> and <code>Age</code> as a function of rank. Plot predicted probabilities from the model.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggeffects)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>colors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Extremely liberal"</span> <span class="ot">=</span> <span class="st">"black"</span>,</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Liberal"</span> <span class="ot">=</span> <span class="st">"#0e2f44"</span>,  <span class="co"># Dark blue</span></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Slightly liberal"</span> <span class="ot">=</span> <span class="st">"#1d5a6c"</span>,  <span class="co"># Less dark blue</span></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Moderate"</span> <span class="ot">=</span> <span class="st">"#358ca3"</span>,  <span class="co"># Medium blue</span></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Slghtly conservative"</span> <span class="ot">=</span> <span class="st">"#71b9d1"</span>,  <span class="co"># Light blue</span></span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Conservative"</span> <span class="ot">=</span> <span class="st">"#a6dcef"</span>,  <span class="co"># Lighter blue</span></span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Extrmly conservative"</span> <span class="ot">=</span> <span class="st">"#d0f0fd"</span>)  <span class="co"># Very light blue</span></span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>mass_trans_spend_right <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(data<span class="sc">$</span>mass_trans_spend_right)</span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>fit3 <span class="ot">&lt;-</span> <span class="fu">glm</span>(mass_trans_spend_right <span class="sc">~</span> sex <span class="sc">+</span> age <span class="sc">+</span> sei10<span class="sc">+</span>polviews, <span class="at">data =</span> data, <span class="at">family =</span> binomial)</span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>pp_pol <span class="ot">&lt;-</span> <span class="fu">ggemmeans</span>(fit3, <span class="at">terms =</span> <span class="fu">c</span>(<span class="st">"polviews"</span>))</span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjusted plot with gradient colors</span></span>
-<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>pol_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(pp_pol, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> predicted, <span class="at">color =</span> x)) <span class="sc">+</span></span>
-<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> conf.low, <span class="at">ymax =</span> conf.high), <span class="at">width =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
-<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> colors) <span class="sc">+</span></span>
-<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Effect of Political Views on Satisfaction with Mass Transportation"</span>,</span>
-<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Political Views"</span>, <span class="at">y =</span> <span class="st">"Predicted Probability"</span>,</span>
-<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Political Views"</span>) <span class="sc">+</span></span>
-<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>pol_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="1152"></p>
-</figure>
-</div>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>pp_sex <span class="ot">&lt;-</span> <span class="fu">ggemmeans</span>(fit3, <span class="at">terms =</span> <span class="fu">c</span>(<span class="st">"sex"</span>))</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>sex_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(pp_sex, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> predicted, <span class="at">color =</span> x)) <span class="sc">+</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> conf.low, <span class="at">ymax =</span> conf.high), <span class="at">width =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Effect of Sex on Satisfaction with Mass Transportation"</span>,</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Sex"</span>, <span class="at">y =</span> <span class="st">"Predicted Probability"</span>,</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Sex"</span>) <span class="sc">+</span></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>pp_sex</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>prediction <span class="ot">=</span> <span class="fu">ggemmeans</span>(ordinal_log_int, <span class="at">terms =</span> <span class="fu">c</span>(<span class="st">'Age'</span>,<span class="st">'Gender'</span>))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(prediction)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code># Predicted probabilities of mass_trans_spend_right
+<pre><code># Predicted probabilities of Tech_Rank
 
-sex | Predicted |     95% CI
+Tech_Rank: 1
+Gender: F
+
+Age | Predicted |     95% CI
 ----------------------------
-  0 |      0.48 | 0.44, 0.51
-  1 |      0.55 | 0.51, 0.58
+ 15 |      0.19 | 0.14, 0.25
+ 30 |      0.16 | 0.12, 0.19
+ 45 |      0.13 | 0.10, 0.16
+ 75 |      0.08 | 0.04, 0.13
 
-Adjusted for:
-*   age = 48.90
-* sei10 = 46.07</code></pre>
+Tech_Rank: 1
+Gender: M
+
+Age | Predicted |     95% CI
+----------------------------
+ 15 |      0.16 | 0.10, 0.21
+ 30 |      0.13 | 0.10, 0.15
+ 45 |      0.10 | 0.07, 0.13
+ 75 |      0.06 | 0.02, 0.11
+
+Tech_Rank: 2
+Gender: F
+
+Age | Predicted |     95% CI
+----------------------------
+ 15 |      0.17 | 0.13, 0.21
+ 30 |      0.15 | 0.12, 0.18
+ 45 |      0.13 | 0.11, 0.16
+ 75 |      0.10 | 0.06, 0.14
+
+Tech_Rank: 2
+Gender: M
+
+Age | Predicted |     95% CI
+----------------------------
+ 15 |      0.15 | 0.11, 0.19
+ 30 |      0.13 | 0.10, 0.16
+ 45 |      0.11 | 0.08, 0.14
+ 75 |      0.08 | 0.03, 0.12
+
+Tech_Rank: 3
+Gender: F
+
+Age | Predicted |     95% CI
+----------------------------
+ 15 |      0.15 | 0.12, 0.17
+ 30 |      0.14 | 0.12, 0.17
+ 45 |      0.13 | 0.11, 0.16
+ 75 |      0.11 | 0.07, 0.14
+
+Tech_Rank: 3
+Gender: M
+
+Age | Predicted |     95% CI
+----------------------------
+ 15 |      0.14 | 0.11, 0.17
+ 30 |      0.13 | 0.11, 0.16
+ 45 |      0.12 | 0.09, 0.14
+ 75 |      0.09 | 0.05, 0.13
+
+Tech_Rank: 4
+Gender: F
+
+Age | Predicted |     95% CI
+----------------------------
+ 15 |      0.12 | 0.10, 0.14
+ 30 |      0.12 | 0.10, 0.14
+ 45 |      0.12 | 0.10, 0.14
+ 75 |      0.11 | 0.08, 0.14
+
+Tech_Rank: 4
+Gender: M
+
+Age | Predicted |     95% CI
+----------------------------
+ 15 |      0.12 | 0.10, 0.14
+ 30 |      0.12 | 0.10, 0.14
+ 45 |      0.11 | 0.09, 0.14
+ 75 |      0.10 | 0.06, 0.13
+
+Tech_Rank: 5
+Gender: F
+
+Age | Predicted |     95% CI
+----------------------------
+ 15 |      0.10 | 0.07, 0.12
+ 30 |      0.10 | 0.08, 0.12
+ 45 |      0.11 | 0.08, 0.13
+ 75 |      0.11 | 0.08, 0.13
+
+Tech_Rank: 5
+Gender: M
+
+Age | Predicted |     95% CI
+----------------------------
+ 15 |      0.10 | 0.08, 0.12
+ 30 |      0.11 | 0.08, 0.13
+ 45 |      0.11 | 0.09, 0.13
+ 75 |      0.10 | 0.07, 0.13
+
+Tech_Rank: 6
+Gender: F
+
+Age | Predicted |     95% CI
+----------------------------
+ 15 |      0.08 | 0.06, 0.10
+ 30 |      0.08 | 0.07, 0.10
+ 45 |      0.09 | 0.07, 0.11
+ 75 |      0.10 | 0.08, 0.13
+
+Tech_Rank: 6
+Gender: M
+
+Age | Predicted |     95% CI
+----------------------------
+ 15 |      0.08 | 0.06, 0.11
+ 30 |      0.09 | 0.07, 0.11
+ 45 |      0.10 | 0.08, 0.12
+ 75 |      0.10 | 0.08, 0.13
+
+Tech_Rank: 7
+Gender: F
+
+Age | Predicted |     95% CI
+----------------------------
+ 15 |      0.06 | 0.04, 0.08
+ 30 |      0.07 | 0.05, 0.09
+ 45 |      0.08 | 0.06, 0.10
+ 75 |      0.10 | 0.07, 0.13
+
+Tech_Rank: 7
+Gender: M
+
+Age | Predicted |     95% CI
+----------------------------
+ 15 |      0.07 | 0.05, 0.09
+ 30 |      0.08 | 0.06, 0.10
+ 45 |      0.09 | 0.07, 0.12
+ 75 |      0.11 | 0.08, 0.13
+
+Tech_Rank: 8
+Gender: F
+
+Age | Predicted |     95% CI
+----------------------------
+ 15 |      0.05 | 0.03, 0.06
+ 30 |      0.06 | 0.04, 0.07
+ 45 |      0.06 | 0.05, 0.08
+ 75 |      0.09 | 0.05, 0.12
+
+Tech_Rank: 8
+Gender: M
+
+Age | Predicted |     95% CI
+----------------------------
+ 15 |      0.06 | 0.03, 0.08
+ 30 |      0.07 | 0.05, 0.08
+ 45 |      0.08 | 0.05, 0.10
+ 75 |      0.10 | 0.06, 0.13
+
+Tech_Rank: 9
+Gender: F
+
+Age | Predicted |     95% CI
+----------------------------
+ 15 |      0.04 | 0.02, 0.05
+ 30 |      0.04 | 0.03, 0.06
+ 45 |      0.05 | 0.04, 0.07
+ 75 |      0.08 | 0.04, 0.11
+
+Tech_Rank: 9
+Gender: M
+
+Age | Predicted |     95% CI
+----------------------------
+ 15 |      0.04 | 0.03, 0.06
+ 30 |      0.06 | 0.04, 0.07
+ 45 |      0.07 | 0.04, 0.09
+ 75 |      0.09 | 0.05, 0.14
+
+Tech_Rank: 10
+Gender: F
+
+Age | Predicted |     95% CI
+----------------------------
+ 15 |      0.03 | 0.02, 0.04
+ 30 |      0.03 | 0.02, 0.05
+ 45 |      0.04 | 0.03, 0.06
+ 75 |      0.06 | 0.03, 0.09
+
+Tech_Rank: 10
+Gender: M
+
+Age | Predicted |     95% CI
+----------------------------
+ 15 |      0.03 | 0.02, 0.05
+ 30 |      0.04 | 0.03, 0.06
+ 45 |      0.05 | 0.03, 0.07
+ 75 |      0.08 | 0.03, 0.13
+
+Tech_Rank: 11
+Gender: F
+
+Age | Predicted |     95% CI
+----------------------------
+ 15 |      0.02 | 0.01, 0.03
+ 30 |      0.02 | 0.01, 0.03
+ 45 |      0.03 | 0.02, 0.04
+ 75 |      0.04 | 0.02, 0.07
+
+Tech_Rank: 11
+Gender: M
+
+Age | Predicted |     95% CI
+----------------------------
+ 15 |      0.02 | 0.01, 0.04
+ 30 |      0.03 | 0.02, 0.04
+ 45 |      0.04 | 0.02, 0.05
+ 75 |      0.06 | 0.02, 0.10
+
+Tech_Rank: 12
+Gender: F
+
+Age | Predicted |     95% CI
+----------------------------
+ 15 |      0.01 | 0.00, 0.02
+ 30 |      0.01 | 0.01, 0.02
+ 45 |      0.02 | 0.01, 0.02
+ 75 |      0.02 | 0.01, 0.04
+
+Tech_Rank: 12
+Gender: M
+
+Age | Predicted |     95% CI
+----------------------------
+ 15 |      0.01 | 0.00, 0.02
+ 30 |      0.02 | 0.01, 0.03
+ 45 |      0.02 | 0.01, 0.03
+ 75 |      0.03 | 0.01, 0.06
+
+Tech_Rank: 13
+Gender: F
+
+Age | Predicted |     95% CI
+----------------------------
+ 15 |      0.00 | 0.00, 0.00
+ 30 |      0.00 | 0.00, 0.00
+ 45 |      0.00 | 0.00, 0.01
+ 75 |      0.00 | 0.00, 0.01
+
+Tech_Rank: 13
+Gender: M
+
+Age | Predicted |     95% CI
+----------------------------
+ 15 |      0.00 | 0.00, 0.00
+ 30 |      0.00 | 0.00, 0.01
+ 45 |      0.00 | 0.00, 0.01
+ 75 |      0.01 | 0.00, 0.01</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>pp_ses <span class="ot">&lt;-</span> <span class="fu">ggemmeans</span>(fit3, <span class="at">terms =</span> <span class="st">"sei10"</span>)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>ses_plot <span class="ot">&lt;-</span>  <span class="fu">ggplot</span>(pp_ses, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> predicted)) <span class="sc">+</span></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"#2c7fb8"</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span> </span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> conf.low, <span class="at">ymax =</span> conf.high), <span class="at">fill =</span> <span class="st">"#2c7fb8"</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span>  <span class="co"># Add a confidence interval band</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Effect of SES on Satisfaction with Mass Transportation"</span>,</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Socioeconomic Status"</span>, <span class="at">y =</span> <span class="st">"Predicted Probability"</span>) <span class="sc">+</span></span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)  </span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>ses_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>   <span class="fu">ggplot</span>(prediction, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> predicted, <span class="at">color =</span> group)) <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Age"</span>, <span class="at">y =</span> <span class="st">"Predicted Probability"</span>, <span class="at">color =</span> <span class="st">"Gender"</span>) <span class="sc">+</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-18-2.png" class="img-fluid figure-img" width="1152"></p>
+<p><img src="ord_lab_q_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
-</div>
-</div>
-</section>
-<section id="model-assumptions" class="level2">
-<h2 class="anchored" data-anchor-id="model-assumptions">Model Assumptions</h2>
-<ul>
-<li>Is the logistic model a good choice for this data?</li>
-</ul>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">binned_residuals</span>(fit2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>Warning: About 88% of the residuals are inside the error bounds (~95% or higher would be good).</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">binned_residuals</span>(fit3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>Warning: About 90% of the residuals are inside the error bounds (~95% or higher would be good).</code></pre>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Answer: Neither fit 2 or 3 is good.</p>
-</div>
-</div>
-</section>
-<section id="model-fit" class="level2">
-<h2 class="anchored" data-anchor-id="model-fit">Model fit</h2>
-<ul>
-<li>Calculate the <span class="math inline">\(R^2\)</span> for this model</li>
-</ul>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">r2_mcfadden</span>(fit2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code># R2 for Generalized Linear Regression
-       R2: 0.025
-  adj. R2: 0.025</code></pre>
-</div>
-</div>
-<blockquote class="blockquote">
-<p>R2 interpretation: 2.5% of variance in log odds of satisfaction is explained by sex, age, and polviews</p>
-<p>Next, Take a look at the binned residual plots for each continuous predictor variable and look at linearity. Is there a predictor that sticks out? What can we do to improve model fit in this case?</p>
-</blockquote>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>age<span class="ot">=</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>age)</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">glm</span>(mass_trans_spend_right <span class="sc">~</span> sex <span class="sc">+</span> age <span class="sc">+</span> sei10<span class="sc">+</span>polviews, <span class="at">data =</span> data, <span class="at">family =</span> binomial)</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="fu">binned_residuals</span>(fit2, <span class="at">term=</span><span class="st">"sei10"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>Warning: About 90% of the residuals are inside the error bounds (~95% or higher would be good).</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">binned_residuals</span>(fit2, <span class="at">term=</span><span class="st">"age"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>Ok: About 98% of the residuals are inside the error bounds.</code></pre>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">binned_residuals</span>(fit2, <span class="at">term=</span><span class="st">"sei10"</span>) <span class="sc">%&gt;%</span> <span class="fu">plot</span>(<span class="at">show_dots=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">binned_residuals</span>(fit2, <span class="at">term=</span><span class="st">"age"</span>) <span class="sc">%&gt;%</span> <span class="fu">plot</span>(<span class="at">show_dots=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-21-2.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>SES has some points that are not in the bound. Suggesting that it may not be linear, which breaks the linearity assumption.</p>
 </div>
 </div></li>
 </ul>
-</div>
-</div>
-</section>
-<section id="testing-polviews" class="level2">
-<h2 class="anchored" data-anchor-id="testing-polviews">Testing Polviews</h2>
+<section id="latent-visualization" class="level3">
+<h3 class="anchored">Latent Visualization</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">emmeans</span>(fit3, <span class="st">"polviews"</span>) <span class="sc">%&gt;%</span> <span class="fu">pairs</span>() <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> <span class="fu">filter</span>(p.value <span class="sc">&lt;</span> .<span class="dv">05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>ols_clm <span class="ot">=</span> MASS<span class="sc">::</span><span class="fu">polr</span>(Tech_Rank<span class="sc">~</span>Gender<span class="sc">*</span>Age, <span class="at">data=</span>gbbo)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggeffect</span>(ols_clm, <span class="fu">c</span>(<span class="st">"Age[all]"</span>, <span class="st">"Gender"</span>), <span class="at">latent=</span><span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">plot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code> contrast                                   estimate        SE  df z.ratio
- Extremely liberal - Moderate             -0.9266262 0.1950664 Inf  -4.750
- Extremely liberal - Slghtly conservative -0.8487137 0.2127293 Inf  -3.990
- Extremely liberal - Conservative         -0.9935486 0.2108369 Inf  -4.712
- Extremely liberal - Extrmly conservative -1.3402621 0.2792876 Inf  -4.799
- Liberal - Moderate                       -0.7090022 0.1308520 Inf  -5.418
- Liberal - Slghtly conservative           -0.6310897 0.1555805 Inf  -4.056
- Liberal - Conservative                   -0.7759246 0.1532081 Inf  -5.065
- Liberal - Extrmly conservative           -1.1226380 0.2392048 Inf  -4.693
- Slightly liberal - Extrmly conservative  -0.7334002 0.2412625 Inf  -3.040
- p.value
-  &lt;.0001
-  0.0013
-  0.0001
-  &lt;.0001
-  &lt;.0001
-  0.0010
-  &lt;.0001
-  0.0001
-  0.0382
-
-Results are averaged over the levels of: sex 
-Results are given on the log odds ratio (not the response) scale. 
-P value adjustment: tukey method for comparing a family of 7 estimates </code></pre>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ord_lab_q_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">emmeans</span>(fit3, <span class="st">"polviews"</span>, <span class="at">type=</span><span class="st">"response"</span>) <span class="sc">%&gt;%</span> <span class="fu">pairs</span>() <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> <span class="fu">filter</span>(p.value <span class="sc">&lt;</span> .<span class="dv">05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code> contrast                                 odds.ratio         SE  df null
- Extremely liberal / Moderate              0.3958871 0.07722426 Inf    1
- Extremely liberal / Slghtly conservative  0.4279651 0.09104070 Inf    1
- Extremely liberal / Conservative          0.3702605 0.07806458 Inf    1
- Extremely liberal / Extrmly conservative  0.2617771 0.07311109 Inf    1
- Liberal / Moderate                        0.4921350 0.06439684 Inf    1
- Liberal / Slghtly conservative            0.5320118 0.08277063 Inf    1
- Liberal / Conservative                    0.4602780 0.07051835 Inf    1
- Liberal / Extrmly conservative            0.3254202 0.07784206 Inf    1
- Slightly liberal / Extrmly conservative   0.4802732 0.11587191 Inf    1
- z.ratio p.value
-  -4.750  &lt;.0001
-  -3.990  0.0013
-  -4.712  0.0001
-  -4.799  &lt;.0001
-  -5.418  &lt;.0001
-  -4.056  0.0010
-  -5.065  &lt;.0001
-  -4.693  0.0001
-  -3.040  0.0382
-
-Results are averaged over the levels of: sex 
-P value adjustment: tukey method for comparing a family of 7 estimates 
-Tests are performed on the log odds ratio scale </code></pre>
 </div>
 </div>
 <ul>
-<li><p>Conservatives are about 2 times more likely to support mass transit spending compared to extremely liberal and liberal</p></li>
-<li><p>Extreme liberals are 3.8 to 2.4 times less likely to support spending compared to conservatives, moderates and slight conservatives</p></li>
-<li><p>Extrm conservatives are a bit more than 2 times more likely to support mass spending than liberals and slight liberals</p></li>
-<li><p>Liberals are 2 times less likely to support spending than moderates and slight conservatives. ;;;;;;;;;;;; ## Conclusion</p></li>
+<li><p>Use the Brant test to support or reject the hypothesis that the proportional odds assumption holds for your simplified model.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">brant.test</span>(ols_clm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Brant Test:
+               chi-sq   df   pr(&gt;chi)  
+Omnibus          40.1   33      0.184  
+GenderM          13.9   11      0.240  
+Age              13.8   11      0.243  
+GenderM:Age      18.0   11      0.082 .
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+H0: Proportional odds assumption holds</code></pre>
+</div>
+</div>
+<h2 id="brms" class="anchored" data-anchor-id="latent-visualization"><code>brms</code></h2></li>
+<li><p>Below is a model implementation using the <code>brms</code> package. We will just use the default priors for this. The exercise is to run this code and note your observations. What are salient differences you observe in how the model fitting takes place With respect to the results, how do you compare the results of the model you fit with <code>clm</code> and the one you fit with <code>brms</code>?</p></li>
 </ul>
-<p>___ based on the model summary below, and the three figures.</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: right;">Df</th>
-<th style="text-align: right;">Deviance</th>
-<th style="text-align: right;">Resid. Df</th>
-<th style="text-align: right;">Resid. Dev</th>
-<th style="text-align: right;">Pr(&gt;Chi)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">NULL</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">2589</td>
-<td style="text-align: right;">3581.340</td>
-<td style="text-align: right;">NA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">sex</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">11.31903</td>
-<td style="text-align: right;">2588</td>
-<td style="text-align: right;">3570.021</td>
-<td style="text-align: right;">0.0007672</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">age</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">10.10603</td>
-<td style="text-align: right;">2587</td>
-<td style="text-align: right;">3559.915</td>
-<td style="text-align: right;">0.0014778</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">sei10</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">14.11908</td>
-<td style="text-align: right;">2586</td>
-<td style="text-align: right;">3545.796</td>
-<td style="text-align: right;">0.0001716</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">polviews</td>
-<td style="text-align: right;">6</td>
-<td style="text-align: right;">63.02844</td>
-<td style="text-align: right;">2580</td>
-<td style="text-align: right;">3482.768</td>
-<td style="text-align: right;">0.0000000</td>
-</tr>
-</tbody>
-</table>
-<p>Table 1</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>  ols2_brm <span class="ot">=</span> <span class="fu">brm</span>(Tech_Rank <span class="sc">~</span>  Gender<span class="sc">*</span>Age, <span class="at">data=</span>gbbo, <span class="at">family =</span> cumulative, <span class="at">cores =</span> <span class="dv">4</span>,<span class="at">chains =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ul>
+<li><p>The <code>conditional_effects</code> function is used to plot predicted probabilities by Gender and Age across each rank.</p>
+<p>::: {.cell}</p>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">conditional_effects</span>(ols2_brm, <span class="at">categorical =</span> T)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<p>::: {.cell-output-display} <img src="ord_lab_q_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"> :::</p>
+<p>::: {.cell-output-display} <img src="ord_lab_q_files/figure-html/unnamed-chunk-13-2.png" class="img-fluid" width="672"> ::: :::</p></li>
+<li><p><code>check_predictions</code> from the <code>easystats</code> <code>performance</code> package is used for examining model fit (i.e., does the data fit the model being used?). Run the below code. What do you think?</p></li>
+</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_predictions</span>(ols2_brm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div>
 <figure class="figure">
-<p><img src="index_files/figure-html/plot-sexviews-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>Figure 1: Effect of Sex on Satisfaction with Mass Transportation</figcaption>
+<p><img src="ord_lab_q_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<div class="cell">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="index_files/figure-html/plot-sesviews-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>Figure 2: Effect of SES on Satisfaction with Mass Transportation</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="index_files/figure-html/plot-polviews-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption>Figure 3: Effect of Political Views on Satisfaction with Mass Transportation</figcaption>
-</figure>
-</div>
-</div>
-</div>
+</section>
+</section>
 </section>
 
 </main>
